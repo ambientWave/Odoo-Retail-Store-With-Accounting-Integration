@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_combined_menu_item_tree" model="ir.ui.view">
+        <field name="name">menu.item.tree</field>
+        <field name="model">combined.menu.item</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="item_name"/>
+                <field name="item_price"/>
+                <field name="item_category"/>
+                <field name="no_of_orders_per_month"/>
+                <field name="note"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_combined_menu_item_form" model="ir.ui.view">
+        <field name="name">menu.item.form</field>
+        <field name="model">combined.menu.item</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="item_image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <field name="item_name"/>
+                        <field name="item_price"/>
+                        <field name="item_category"/>
+                        <field name="no_of_orders_per_month"/>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+<!--                <div class="oe_chatter">-->
+<!--                    <field name="message_follower_ids"/>-->
+<!--                    <field name="message_ids"/>-->
+<!--                </div>-->
+            </form>
+        </field>
+    </record>
+
+    <record id="view_combined_sale_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">combined.sale.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <header>
+                    <button name="action_completed" string="تم الانتهاء" class="btn-primary" type="object"/>
+                </header>
+                <field name="sale_serial"/>
+                <field name="sale_timestamp"/>
+                <field name="sale_item_id"/>
+                <field name="sale_total_credit" optional="show"/>
+                <field name="sale_status"/>
+                <field name="sale_note"/>
+                <field name="assigned_deliveryman"/>
+                <field name="customer_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_combined_sale_order_form" model="ir.ui.view">
+        <field name="name">combined.sale.order.form</field>
+        <field name="model">combined.sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <button name="%(custom_restaurant.action_remove_invoice_reason)d" string="الغاء الفاتورة"
+                            type="action" class="oe_highlight"/>
+                <sheet>
+                    <header>
+                        <field name="sale_status" widget="statusbar" statusbar_visible="wait,in-operation,delivering,completed"/>
+                        <button name="action_wait" id="button_wait" string="وضع الاوردر في الانتظار" class="btn-primary" type="object"/>
+                        <button name="action_in_operation" id="button_in_operation" string="قيد العمل" class="btn-primary" type="object"/>
+                        <button name="action_delivering" id="button_delivering" string="اوردر توصيل" class="btn-primary" type="object"/>
+                        <button name="action_completed" id="button_completed" string="تم الانتهاء" class="btn-primary" type="object"/>
+                        <button name="action_cancelled" id="button_cancelled" string="الغاء امر البيع" type="object"
+                        confirm="هل انت متأكد انك تريد الغاء امر البيع؟"/>
+                    </header>
+                     <div class="oe_title">
+                        <h1>
+                            <field name="sale_serial" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="sale_serial"/>
+                        <field name="sale_timestamp"/>
+                        <field name="sale_item_id">
+                            <tree editable="bottom">
+                                <field name="item_name" readonly="1"/>
+                                <field name="item_price" readonly="1"/>
+                                <field name="quantity"/>
+                                <field name="sale_item_subtotal" readonly="1" invisible="0" on_change="1"/>
+                            </tree>
+                        </field>
+<!--                        <field name="sale_item_test">-->
+<!--                            <tree editable="bottom">-->
+<!--                                <field name="sale_id" readonly="1"/>-->
+<!--                                <field name="item_id" readonly="1"/>-->
+<!--                                <field name="item_id_price" readonly="1"/>-->
+<!--                                <field name="item_id_quantity" readonly="1"/>-->
+<!--                                <field name="item_subtotal"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+                        <field name="sale_total_credit" groups="custom_restaurant.group_show_sales_cashier_assistant"/> <!-- visible only for users inside this group -->
+                        <field name="sale_note"/>
+                        <field name="assigned_deliveryman"/>
+                        <field name="customer_name"/>
+                    </group>
+                    <notebook>
+                        <page string="تاريخ طلبات العميل" name="customer_orders_history">
+<!--                            <field-->
+<!--                                name="order_line"-->
+<!--                                widget="section_and_note_one2many"-->
+<!--                                mode="tree,kanban"-->
+<!--                                attrs="{'readonly': [('state', 'in', ('done','cancel'))]}">-->
+<!--                            <form>-->
+<!--                            </form>-->
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_combined_menu_item_tree" model="ir.actions.act_window">
+        <field name="name">قائمة الاصناف</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">combined.menu.item</field>
+<!--        <field name="view_id" ref="view_combined_menu_item_tree"/>-->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                يمكنك انشاء كارت للصنف المراد اضافته لقاعدة البيانات
+            </p>
+            <p>
+                بعد الانتهاء، يمكنك اضافته علي اوردر للعميل
+                <br/>
+                كما يمكنك تغيير البيانات الخاصه بعذا الصنف
+            </p>
+        </field>
+    </record>
+
+    <record id="action_combined_sale_order_tree" model="ir.actions.act_window">
+        <field name="name">اوامر البيع</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">combined.sale.order</field>
+        <field name="view_id" ref="view_combined_sale_order_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                يمكنك انشاء كارت للصنف المراد اضافته لقاعدة البيانات
+            </p>
+            <p>
+                بعد الانتهاء، يمكنك اضافته علي اوردر للعميل
+                <br/>
+                كما يمكنك تغيير البيانات الخاصه بعذا الصنف
+            </p>
+        </field>
+    </record>
+
+    <record id="action_combined_sale_order_form" model="ir.actions.act_window">
+        <field name="name">انشاء امر بيع</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">combined.sale.order</field>
+        <field name="view_id" ref="view_combined_sale_order_form"/>
+        <field name="view_mode">form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                يمكنك انشاء كارت للصنف المراد اضافته لقاعدة البيانات
+            </p>
+            <p>
+                بعد الانتهاء، يمكنك اضافته علي اوردر للعميل
+                <br/>
+                كما يمكنك تغيير البيانات الخاصه بعذا الصنف
+            </p>
+        </field>
+    </record>
+
+        <!-- main menu entry that refers to sales part inside the UI -->
+    <menuitem id="menu_combined_pos_root"
+              name="نقطة البيع"
+              action="action_combined_menu_item_tree"
+              sequence="20"/>
+
+    <menuitem id="menu_combined_pos_menu_item_root"
+              name="قائمة الاصناف"
+              parent="menu_combined_pos_root"
+              action="action_combined_menu_item_tree"
+              sequence="21"/>
+
+    <menuitem id="menu_combined_pos_customers_root"
+              name="قائمة العملاء"
+              parent="menu_combined_pos_root"
+              action="base.action_partner_form"
+              sequence="22"/>
+
+    <menuitem id="menu_combined_pos_sales_menu_root"
+              name="اوامر البيع"
+              parent="menu_combined_pos_root"
+              action="action_combined_sale_order_tree"
+              sequence="23"/>
+
+    <menuitem id="menu_combined_pos_sales_menu_view"
+              name="عرض اوامر البيع"
+              parent="menu_combined_pos_sales_menu_root"
+              action="action_combined_sale_order_tree"
+              sequence="24"/>
+
+    <menuitem id="menu_combined_pos_sales_menu_create"
+              name="انشاء امر بيع"
+              parent="menu_combined_pos_sales_menu_root"
+              action="action_combined_sale_order_form"
+              sequence="25"/>
+
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_retail_read_only,access.new.retail.order,custom_retail.model_new_retail_order,,1,0,0,0
+access_retail_full_read_write,access.new.retail.order,custom_retail.model_new_retail_order,,1,1,0,0
+access_retail_full_perm,access.new.retail.order,custom_retail.model_new_retail_order,,1,1,1,1
+access_retail_order_line_full_perm,access.new.order.line,custom_retail.model_new_order_line,,1,1,1,1
+access_retail_product_full_perm,access.new.product,custom_retail.model_new_product,,1,1,1,1
+access_retail_product_item_full_perm,access.new.product.item,custom_retail.model_new_product_item,,1,1,1,1
+access_retail_product_category_full_perm,access.new.product.category,custom_retail.model_new_product_category,,1,1,1,1
