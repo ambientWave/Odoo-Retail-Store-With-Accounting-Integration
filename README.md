@@ -1,5 +1,7 @@
 # Odoo-Retail-Store-With-Accounting-Integration
 
+A custom odoo module that can be used to manage simple retail store operations including basic accounting.
+
 ## Screenshots
 
 <picture>
